@@ -1,6 +1,6 @@
 /*
- * grunt-ec2
- * https://github.com/tophatmonocle/grunt-ec2
+ * grunt-aws
+ * https://github.com/tophatmonocle/grunt-aws
  *
  * Copyright (c) 2013 Maciej Lisiewski
  * Licensed under the MIT license.
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     },
 
     // Configuration to be run (and then tested).
-    ec2: {
+    aws: {
       default_options: {
         options: {
         },
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'ec2', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'aws', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
