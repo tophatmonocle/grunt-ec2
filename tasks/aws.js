@@ -7,11 +7,11 @@ module.exports = function(grunt) {
 
         var requiredir = require("require-dir");
         this.AWS = require("aws-sdk");
-        this.services = requiredir("./service");        
-
+        this.services = requiredir("./service");
+/*
         if (this.data.s3 !== undefined || (this.target === 's3' && this.data.s3 === undefined)) {
             this.services.s3.run(grunt, this);
-        }
+        }*/
 
         if (this.data.elb !== undefined || (this.target === 'elb' && this.data.elb === undefined)) {
             this.services.elb.run(grunt, this);

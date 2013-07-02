@@ -19,34 +19,55 @@ exports.run = function(grunt, taskData) {
         var task = taskData;
     }
 
-    if (task.cors) {
-        var corsOptions = _(_.clone(options)).extend(task.cors.options || {});
-        if (corsOptions.region == 'us-standard') {
-            corsOptions.region = 'us-east-1';
+    if (task.create) {
+        var eblCreateOptions = _(_.clone(options)).extend(task.create.options || {});
+        if (eblCreateOptions.region == 'us-standard') {
+            eblCreateOptions.region = 'us-east-1';
         }
-        AWS.config.update(_.pick(corsOptions, 'accessKeyId', 'secretAccessKey', 'region'));
-        var s3 = new AWS.S3(_.pick(corsOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        AWS.config.update(_.pick(eblCreateOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        var elb = new AWS.ELB(_.pick(eblCreateOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
         var done = taskData.async();
-        grunt.log.writeln(JSON.stringify(task.cors));
 
-        s3.putBucketCors({
-            'Bucket': corsOptions.bucket,
-            'CORSConfiguration': {
-                'CORSRules': [
-                    task.cors.CORSRules
-                ]
-            }
-        },
-        function(err, data) {
-            if (err) {
-                grunt.log.writeln(JSON.stringify(err));
-                done();
-            }
-            else {
-                grunt.log.writeln(JSON.stringify(data));
-                done();
-            }
+        task.create.forEach(function(loadBalancer){
+            elb.createLoadBalancer(loadBalancer,
+            function(err, data) {
+                if (err) {
+                    grunt.log.writeln(JSON.stringify(err));
+                    done();
+                }
+                else {
+                    grunt.log.writeln(JSON.stringify(data));
+                    done();
+                }
+            });
         });
     }
+
+    if (task.delete) {
+        var eblDeleteOptions = _(_.clone(options)).extend(task.delete.options || {});
+        if (eblDeleteOptions.region == 'us-standard') {
+            eblDeleteOptions.region = 'us-east-1';
+        }
+        AWS.config.update(_.pick(eblDeleteOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        var elb = new AWS.ELB(_.pick(eblDeleteOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+
+        var done = taskData.async();
+
+        task.delete.forEach(function(loadBalancer){
+            elb.deleteLoadBalancer({"LoadBalancerName": loadBalancer},
+            function(err, data) {
+                if (err) {
+                    grunt.log.writeln(JSON.stringify(err));
+                    done();
+                }
+                else {
+                    grunt.log.writeln(JSON.stringify(data));
+                    done();
+                }
+            });
+        });
+    }
+
+
 };
