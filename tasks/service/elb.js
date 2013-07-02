@@ -37,7 +37,7 @@ exports.run = function(grunt, taskData) {
                     done();
                 }
                 else {
-                    grunt.log.writeln("ELB" + data.DNSName + " created"));
+                    grunt.log.writeln("ELB " + data.DNSName + " created");
                     done();
                 }
             });
@@ -63,6 +63,31 @@ exports.run = function(grunt, taskData) {
                 }
                 else {
                     grunt.log.writeln("ELB " + loadBalancer + " deleted");
+                    done();
+                }
+            });
+        });
+    }
+
+    if (task.addInstances) {
+        var eblAddInstancesOptions = _(_.clone(options)).extend(task.addInstances.options || {});
+        if (eblAddInstancesOptions.region == 'us-standard') {
+            eblAddInstancesOptions.region = 'us-east-1';
+        }
+        AWS.config.update(_.pick(eblAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        var elb = new AWS.ELB(_.pick(eblAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+
+        var done = taskData.async();
+
+        task.addInstances.forEach(function(loadBalancer){
+            elb.registerInstancesWithLoadBalancer(loadBalancer,
+            function(err, data) {
+                if (err) {
+                    grunt.log.writeln(JSON.stringify(err));
+                    done();
+                }
+                else {
+                    grunt.log.writeln(JSON.stringify(data.instances) + " instances added to " + loadBalancer.LoadBalancerName);
                     done();
                 }
             });
