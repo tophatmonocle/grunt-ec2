@@ -37,7 +37,7 @@ exports.run = function(grunt, taskData) {
                     done();
                 }
                 else {
-                    grunt.log.writeln(JSON.stringify(data));
+                    grunt.log.writeln("ELB" + data.DNSName + " created"));
                     done();
                 }
             });
@@ -62,12 +62,10 @@ exports.run = function(grunt, taskData) {
                     done();
                 }
                 else {
-                    grunt.log.writeln(JSON.stringify(data));
+                    grunt.log.writeln("ELB " + loadBalancer + " deleted");
                     done();
                 }
             });
         });
     }
-
-
 };
