@@ -29,7 +29,7 @@ exports.run = function(grunt, taskData) {
             var findAMIOptions = _(_.clone(options)).extend(task.findAMI.options || {});
             if (findAMIOptions.region == 'us-standard') {
                 findAMIOptions.region = 'us-east-1';
-            }
+            }            
             AWS.config.update(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
             var ec2 = new AWS.EC2(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
@@ -55,9 +55,9 @@ exports.run = function(grunt, taskData) {
             if (startEC2Options.region == 'us-standard') {
                 startEC2Options.region = 'us-east-1';
             }
+            task.startEC2['UserData'] = new Buffer(JSON.stringify(task.startEC2['UserData'])).toString('base64');
             AWS.config.update(_.pick(startEC2Options, 'accessKeyId', 'secretAccessKey', 'region'));
             var ec2 = new AWS.EC2(_.pick(startEC2Options, 'accessKeyId', 'secretAccessKey', 'region'));
-            grunt.log.writeln(startEC2Options['UserData']);
             task.startEC2['InstanceType'] = (task.startEC2['InstanceType'] || ami);
 
             ec2.runInstances(_.pick(task.startEC2, "ImageId", "MinCount", "MaxCount",
