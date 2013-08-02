@@ -7,6 +7,8 @@ exports.run = function(grunt, taskData) {
     var AWS = taskData.AWS;
 
     var _ = require("underscore");
+    var util = require('util');
+    var done = taskData.async();
 
     if (taskData.data.s3 !== undefined) {
         var task = taskData.data.s3;
@@ -27,25 +29,22 @@ exports.run = function(grunt, taskData) {
         AWS.config.update(_.pick(corsOptions, 'accessKeyId', 'secretAccessKey', 'region'));
         var s3 = new AWS.S3(_.pick(corsOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
-        var done = taskData.async();
-
         s3.putBucketCors({
             'Bucket': corsOptions.bucket,
             'CORSConfiguration': {
                 'CORSRules': [
-                    task.cors.CORSRules
+                    task.cors.rules
                 ]
             }
         },
         function(err, data) {
             if (err) {
                 grunt.log.writeln(JSON.stringify(err));
-                done();
             }
             else {
-                grunt.log.writeln(JSON.stringify(data));
-                done();
+                grunt.log.writeln(util.format(CORS_SET_SUCCESS,corsOptions.bucket));
             }
+            done();
         });
     }
 };

@@ -38,9 +38,7 @@
   },
   "Dependencies": {
     "grunt": "~0.4.1",
-    "aws-sdk": "~1.3.0",
-    "underscore": "~1.4",
-    "require-dir": "~0.1"
+    "aws-sdk": "~1.2.0"
   },
   "keywords": [
     "gruntplugin"
