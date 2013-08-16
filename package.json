@@ -1,7 +1,7 @@
 {
   "name": "grunt-aws",
   "description": "AWS Grunt plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/tophatmonocle/grunt-aws",
   "author": {
     "name": "Maciej Lisiewski",
@@ -38,7 +38,10 @@
   },
   "Dependencies": {
     "grunt": "~0.4.1",
-    "aws-sdk": "~1.2.0"
+    "aws-sdk": "~1.2.0",
+    "underscore": ">=1.5.5",
+    "require-dir": ">=0.1",
+    "util": ">=0.4.9"
   },
   "keywords": [
     "gruntplugin"
