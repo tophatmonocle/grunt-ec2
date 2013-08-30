@@ -2,7 +2,7 @@
 
 exports.run = function(grunt, taskData) {
     var EC2_INSTANCE_LAUNCH_FAIL = '✗'.red + ' EC2 instance launched failed with %s';
-    var EC2_INSTANCE_LAUNCH_SUCCESS = '↗'.yellow + ' EC2 instance launched';
+    var EC2_INSTANCE_LAUNCH_SUCCESS = '↗'.yellow + ' EC2 instance(s) launched, instance ids:: %s';
     var EC2_INSTANCE_TAG_FAIL = '✗'.red + ' EC2 instance tagging failed with %s';
     var EC2_INSTANCE_TAG_SUCCESS = '↗'.blue + ' EC2 instance tagged';
 
@@ -63,16 +63,16 @@ exports.run = function(grunt, taskData) {
             ec2.runInstances(_.pick(task.startEC2, "ImageId", "MinCount", "MaxCount",
                                                    "KeyName", "InstanceType", "UserData"), function(err, data) {
                 if (err) {
-                    grunt.fail.warn(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, JSON.stringify(err)));
+                    grunt.fail.warn(util.format(EC2_INSTANCE_LAUNCH_FAIL, JSON.stringify(err)));
                     done();
                 }
                 else {
-                    grunt.log.writeln(EC2_INSTANCE_LAUNCH_SUCCESS);
-
                     var instances = new Array();
                     for (var i = 0; i<data.Instances.length; i++) {
                         instances.push(data.Instances[i].InstanceId);
                     }
+
+                    grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, instances.join(", ")));
 
                     if (task.startEC2.Tags !== undefined) {
                         tagInstances(instances, startEC2Options, task.startEC2.Tags);
