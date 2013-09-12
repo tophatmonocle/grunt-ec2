@@ -29,7 +29,7 @@ exports.run = function(grunt, taskData) {
             var findAMIOptions = _(_.clone(options)).extend(task.findAMI.options || {});
             if (findAMIOptions.region == 'us-standard') {
                 findAMIOptions.region = 'us-east-1';
-            }            
+            }
             AWS.config.update(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
             var ec2 = new AWS.EC2(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
@@ -44,8 +44,13 @@ exports.run = function(grunt, taskData) {
                         });
                         var ami = data.Images[0].ImageId;
                         grunt.log.writeln("Found matching AMI: " + ami );
+                        task.startEC2Options.options.ImageId = ami;
+                        startEC2(options,task);
                     }
             });
+        }
+        else {
+            startEC2(options,task);
         }
     };
 
@@ -123,8 +128,7 @@ exports.run = function(grunt, taskData) {
     }
 
 
-    //findAMI(options,task);
-    startEC2(options,task);
+    findAMI(options,task);
     //removeFromAmi(options,task);
     //addToAMI(options,task);
     //terminateEC2(options,task);
