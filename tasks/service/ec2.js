@@ -74,12 +74,12 @@ exports.run = function(grunt, taskData) {
             task.startEC2['UserData'] = new Buffer(JSON.stringify(task.startEC2['UserData'])).toString('base64');
             AWS.config.update(_.pick(startEC2Options, 'accessKeyId', 'secretAccessKey', 'region'));
             var ec2 = new AWS.EC2(_.pick(startEC2Options, 'accessKeyId', 'secretAccessKey', 'region'));
-            task.startEC2['InstanceType'] = (task.startEC2['InstanceType'] || ami);
+            task.startEC2['ImageId'] = (task.startEC2['ImageId'] || ami);
 
             ec2.runInstances(_.pick(task.startEC2, "ImageId", "MinCount", "MaxCount",
                                                    "KeyName", "InstanceType", "UserData"), function(err, data) {
                 if (err) {
-                    grunt.fail.warn(util.format(EC2_INSTANCE_LAUNCH_FAIL, JSON.stringify(err)));
+                    grunt.fail.warn(util.format(EC2_INSTANCE_LAUNCH_FAIL, JSON.stringify(err))); 
                     done();
                 }
                 else {
