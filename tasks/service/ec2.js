@@ -23,6 +23,8 @@ exports.run = function(grunt, taskData) {
     }
 
     var ami;
+    var fcount = 0;
+    var ccount = 0;
 
     var findAMI = function(options, task) {
         if (task.findAMI) {
@@ -33,18 +35,27 @@ exports.run = function(grunt, taskData) {
             AWS.config.update(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
             var ec2 = new AWS.EC2(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
+            grunt.log.writeln("Function count: " + fcount++);
+
             ec2.describeImages(_.pick(task.findAMI, "Owners","ExecutableUsers","Filters"),
                 function(err, data) {
+                    grunt.log.writeln("Callback count: " + ccount++);
                     if (err) {
                         grunt.fail.warn("Fetching AMI info failed. AWS response: "+ JSON.stringify(err));
                     }
                     else {
+                        grunt.log.writeln("Fetching AMI info succeded");
                         data.Images.sort(function(a,b){
-                            return a.Name < b.Name;
+                            if (a.Name > b.Name) {
+                                return -1;
+                            }
+                            else {
+                                return 1;
+                            }
                         });
-                        var ami = data.Images[0].ImageId;
-                        grunt.log.writeln("Found matching AMI: " + ami );
-                        task.startEC2Options.options.ImageId = ami;
+                        ami = data.Images[0].ImageId;
+
+                        grunt.log.writeln("Found latest matching AMI: " + ami + " - \"" +data.Images[0].Name +"\"" );
                         startEC2(options,task);
                     }
             });
