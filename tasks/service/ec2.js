@@ -23,8 +23,6 @@ exports.run = function(grunt, taskData) {
     }
 
     var ami;
-    var fcount = 0;
-    var ccount = 0;
 
     var findAMI = function(options, task) {
         if (task.findAMI) {
@@ -35,11 +33,8 @@ exports.run = function(grunt, taskData) {
             AWS.config.update(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
             var ec2 = new AWS.EC2(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
-            grunt.log.writeln("Function count: " + fcount++);
-
             ec2.describeImages(_.pick(task.findAMI, "Owners","ExecutableUsers","Filters"),
                 function(err, data) {
-                    grunt.log.writeln("Callback count: " + ccount++);
                     if (err) {
                         grunt.fail.warn("Fetching AMI info failed. AWS response: "+ JSON.stringify(err));
                     }
