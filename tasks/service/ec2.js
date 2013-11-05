@@ -73,7 +73,7 @@ exports.run = function(grunt, taskData) {
 
             ec2.runInstances(_.pick(task.startEC2, "ImageId", "MinCount", "MaxCount",
                                                    "KeyName", "InstanceType", "UserData",
-                                                   "Placement"), function(err, data) {
+                                                   "Placement", "SecurityGroups"), function(err, data) {
                 if (err) {
                     grunt.fail.warn(util.format(EC2_INSTANCE_LAUNCH_FAIL, JSON.stringify(err))); 
                     done();
