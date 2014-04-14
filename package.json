@@ -34,7 +34,7 @@
     "grunt": "~0.4.1"
   },
   "dependencies": {
-    "aws-sdk": "~1.2.0",
+    "aws-sdk": "~2.0.0",
     "underscore": ">=1.5.1",
     "require-dir": ">=0.1",
     "util": ">=0.4.9"
