@@ -98,13 +98,21 @@ exports.run = function(grunt, taskData) {
         }
     }
 
-    var tagInstances = function(instances, options, tags) {
+    var tagInstances = function(instances, options, tags, max_retries) {
+        if (max_retries === undefined) {
+            max_retries = 5;
+        }
+
         if (tags) {
             var ec2 = new AWS.EC2(_.pick(options, 'accessKeyId', 'secretAccessKey', 'region'));
             ec2.createTags({Resources: instances, Tags: tags},
                 function(err, data) {
                     if (err) {
-                        grunt.fail.warn(util.format(EC2_INSTANCE_TAG_FAIL, JSON.stringify(err)));
+                        if (max_retries > 0) {
+                            tagInstances(instances, options, tags, max_retries - 1);
+                        } else {
+                            grunt.fail.warn(util.format(EC2_INSTANCE_TAG_FAIL, JSON.stringify(err)));
+                        }
                     }
                     else {
                         grunt.log.writeln(EC2_INSTANCE_TAG_SUCCESS);
