@@ -87,6 +87,7 @@ exports.run = function(grunt, taskData) {
                     grunt.config.set('launched_ec2_instance_ids', instances);
 
                     grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, instances.join(", ")));
+                    grunt.log.writeln(grunt.config('launched_ec2_instance_ids'));
 
                     if (task.startEC2.Tags !== undefined) {
                         tagInstances(instances, startEC2Options, task.startEC2.Tags);
