@@ -1,7 +1,7 @@
 {
   "name": "grunt-aws",
   "description": "AWS Grunt plugin",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "homepage": "https://github.com/tophatmonocle/grunt-aws",
   "author": {
     "name": "Maciej Lisiewski",
