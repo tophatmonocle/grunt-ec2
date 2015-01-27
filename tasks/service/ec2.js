@@ -5,6 +5,7 @@ exports.run = function(grunt, taskData) {
     var EC2_INSTANCE_LAUNCH_SUCCESS = '↗'.yellow + ' EC2 instance(s) launched, instance ids:: %s';
     var EC2_INSTANCE_TAG_FAIL = '✗'.red + ' EC2 instance tagging failed with %s';
     var EC2_INSTANCE_TAG_SUCCESS = '↗'.blue + ' EC2 instance tagged';
+    var EC2_INSTANCE_LAUNCHED_TO_DATE = '↗'.yellow + ' EC2 instance(s) launched during entire session, instance ids:: %s';
 
     var AWS = taskData.AWS;
     var _ = require("underscore");
@@ -90,7 +91,8 @@ exports.run = function(grunt, taskData) {
                         grunt.config('launched_ec2_instance_ids').push(instance_id);
                     }
 
-                    grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, instances.join(", ")));
+                    grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, instances.join(', ')));
+                    grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCHED_TO_DATE, grunt.config('launched_ec2_instance_ids').join(', ')));
 
                     if (task.startEC2.Tags !== undefined) {
                         tagInstances(instances, startEC2Options, task.startEC2.Tags);
