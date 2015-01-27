@@ -5,7 +5,7 @@ exports.run = function(grunt, taskData) {
     var EC2_INSTANCE_LAUNCH_SUCCESS = '↗'.yellow + ' EC2 instance(s) launched, instance ids:: %s';
     var EC2_INSTANCE_TAG_FAIL = '✗'.red + ' EC2 instance tagging failed with %s';
     var EC2_INSTANCE_TAG_SUCCESS = '↗'.blue + ' EC2 instance tagged';
-    var EC2_INSTANCE_LAUNCHED_TO_DATE = '↗'.yellow + ' EC2 instance(s) launched during entire session, instance ids:: %s';
+    var EC2_INSTANCE_LAUNCHED_TO_DATE = '↗'.yellow + ' EC2 instance(s) launched so far during entire session, instance ids:: %s';
 
     var AWS = taskData.AWS;
     var _ = require("underscore");
@@ -82,14 +82,13 @@ exports.run = function(grunt, taskData) {
                 else {
                     var instances = new Array();
 
-                    grunt.config.set('launched_ec2_instance_ids', grunt.config('launched_ec2_instance_ids') || new Array());
-
-                    var instance_id;
                     for (var i = 0; i<data.Instances.length; i++) {
-                        instance_id = data.Instances[i].InstanceId;
-                        instances.push(instance_id);
-                        grunt.config('launched_ec2_instance_ids').push(instance_id);
+                        instances.push(data.Instances[i].InstanceId;);
                     }
+
+                    var total_launched_ec2_instance_ids = grunt.config('launched_ec2_instance_ids') || new Array();
+                    total_launched_ec2_instance_ids.concat(instances);
+                    grunt.config.set('launched_ec2_instance_ids', total_launched_ec2_instance_ids);
 
                     grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, instances.join(', ')));
                     grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCHED_TO_DATE, grunt.config('launched_ec2_instance_ids').join(', ')));
