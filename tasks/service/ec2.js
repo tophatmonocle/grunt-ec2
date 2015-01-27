@@ -79,12 +79,16 @@ exports.run = function(grunt, taskData) {
                     done();
                 }
                 else {
-                    var instances = grunt.config('launched_ec2_instance_ids') || new Array();
+                    var instances = new Array();
+
+                    grunt.config.set('launched_ec2_instance_ids', grunt.config('launched_ec2_instance_ids') || new Array());
+
+                    var instance_id;
                     for (var i = 0; i<data.Instances.length; i++) {
-                        instances.push(data.Instances[i].InstanceId);
+                        instance_id = data.Instances[i].InstanceId;
+                        instances.push(instance_id);
+                        grunt.config('launched_ec2_instance_ids').push(instance_id);
                     }
-                    
-                    grunt.config.set('launched_ec2_instance_ids', instances);
 
                     grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, instances.join(", ")));
 
