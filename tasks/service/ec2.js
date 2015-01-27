@@ -83,7 +83,7 @@ exports.run = function(grunt, taskData) {
                     var instances = new Array();
 
                     for (var i = 0; i<data.Instances.length; i++) {
-                        instances.push(data.Instances[i].InstanceId;);
+                        instances.push(data.Instances[i].InstanceId);
                     }
 
                     var total_launched_ec2_instance_ids = grunt.config('launched_ec2_instance_ids') || new Array();
