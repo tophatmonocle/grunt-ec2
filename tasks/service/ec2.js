@@ -87,7 +87,9 @@ exports.run = function(grunt, taskData) {
                     }
 
                     var total_launched_ec2_instance_ids = grunt.config('launched_ec2_instance_ids') || new Array();
+                    grunt.log.writeln(total_launched_ec2_instance_ids);
                     total_launched_ec2_instance_ids.concat(instances);
+                    grunt.log.writeln(total_launched_ec2_instance_ids);
                     grunt.config.set('launched_ec2_instance_ids', total_launched_ec2_instance_ids);
 
                     grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, instances.join(', ')));
