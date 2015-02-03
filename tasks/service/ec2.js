@@ -118,8 +118,7 @@ exports.run = function(grunt, taskData) {
                         } else {
                             grunt.fail.warn(util.format(EC2_INSTANCE_TAG_FAIL, JSON.stringify(err)));
                         }
-                    }
-                    else {
+                    } else {
                         grunt.log.writeln(EC2_INSTANCE_TAG_SUCCESS);
                     }
                     done();
