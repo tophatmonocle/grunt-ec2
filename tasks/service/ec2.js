@@ -18,8 +18,7 @@ exports.run = function(grunt, taskData) {
                 .extend(taskData.data.options || {})
                 .extend(taskData.data.ec2.options || {})
                 .value();
-    }
-    else {
+    } else {
         var task = taskData;
     }
 
@@ -52,12 +51,11 @@ exports.run = function(grunt, taskData) {
                         ami = data.Images[0].ImageId;
 
                         grunt.log.writeln("Found latest matching AMI: " + ami + " - \"" +data.Images[0].Name +"\"" );
-                        startEC2(options,task);
+                        startEC2(options, task);
                     }
             });
-        }
-        else {
-            startEC2(options,task);
+        } else {
+            startEC2(options, task);
         }
     };
 
@@ -78,8 +76,7 @@ exports.run = function(grunt, taskData) {
                 if (err) {
                     grunt.fail.warn(util.format(EC2_INSTANCE_LAUNCH_FAIL, JSON.stringify(err))); 
                     done();
-                }
-                else {
+                } else {
                     var instances = new Array();
 
                     for (var i = 0; i<data.Instances.length; i++) {
@@ -94,8 +91,8 @@ exports.run = function(grunt, taskData) {
 
                     if (task.startEC2.Tags !== undefined) {
                         tagInstances(instances, startEC2Options, task.startEC2.Tags);
-                    }
-                    else {
+                    } else {
+                        grunt.config.writeln("No tags defined to add to instances.");
                         done();
                     }
                 }
