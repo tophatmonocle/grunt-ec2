@@ -77,7 +77,7 @@ exports.run = function (grunt, taskData) {
                 } else {
                     var instances = new Array();
 
-                    for (var i = 0; i<data.Instances.length; i++) {
+                    for (var i = 0; i < data.Instances.length; i++) {
                         instances.push(data.Instances[i].InstanceId);
                     }
 
