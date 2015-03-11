@@ -33,7 +33,7 @@ exports.run = function (grunt, taskData) {
             AWS.config.update(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
             var ec2 = new AWS.EC2(_.pick(findAMIOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
-            ec2.describeImages(_.pick(task.findAMI, "Owners","ExecutableUsers","Filters"),
+            ec2.describeImages(_.pick(task.findAMI, "Owners", "ExecutableUsers", "Filters"),
                 function (err, data) {
                     if (err) {
                         grunt.fail.warn("Fetching AMI info failed. AWS response: " + JSON.stringify(err));
