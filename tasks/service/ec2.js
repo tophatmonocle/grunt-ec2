@@ -123,30 +123,5 @@ exports.run = function (grunt, taskData) {
         }
     }
 
-    var terminateEC2 = function (options, task) {
-        if (task.terminateEC2) {
-            var terminateEC2Options = _(_.clone(options)).extend(task.terminateEC2.options || {});
-            if (terminateEC2Options.region == 'us-standard') {
-                terminateEC2Options.region = 'us-east-1';
-            }
-            AWS.config.update(_.pick(terminateEC2Options, 'accessKeyId', 'secretAccessKey', 'region'));
-            var ec2 = new AWS.EC2(_.pick(terminateEC2Options, 'accessKeyId', 'secretAccessKey', 'region'));
-
-            ec2.terminateInstances(_.pick(task.terminateEC2, "InstanceIds"),
-                function (err, data) {
-                    if (err) {
-                        grunt.fail.warn("Terminating EC2 intances failed. AWS response: \n" + JSON.stringify(err));
-                    }
-                    else {
-                        grunt.log.writeln(JSON.stringify(data));
-                    }
-            });
-        }
-    }
-
-
     findAMI(options, task);
-    //removeFromAmi(options,task);
-    //addToAMI(options,task);
-    //terminateEC2(options,task);
 };
