@@ -21,12 +21,12 @@ exports.run = function (grunt, taskData) {
     }
 
     if (task.create) {
-        var eblCreateOptions = _(_.clone(options)).extend(task.create.options || {});
-        if (eblCreateOptions.region == 'us-standard') {
-            eblCreateOptions.region = 'us-east-1';
+        var elbCreateOptions = _(_.clone(options)).extend(task.create.options || {});
+        if (elbCreateOptions.region == 'us-standard') {
+            elbCreateOptions.region = 'us-east-1';
         }
-        AWS.config.update(_.pick(eblCreateOptions, 'accessKeyId', 'secretAccessKey', 'region'));
-        var elb = new AWS.ELB(_.pick(eblCreateOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        AWS.config.update(_.pick(elbCreateOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        var elb = new AWS.ELB(_.pick(elbCreateOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
         task.create.forEach(function (loadBalancer) {
             elb.createLoadBalancer(loadBalancer,
@@ -41,12 +41,12 @@ exports.run = function (grunt, taskData) {
     }
 
     if (task.delete) {
-        var eblDeleteOptions = _(_.clone(options)).extend(task.delete.options || {});
-        if (eblDeleteOptions.region == 'us-standard') {
-            eblDeleteOptions.region = 'us-east-1';
+        var elbDeleteOptions = _(_.clone(options)).extend(task.delete.options || {});
+        if (elbDeleteOptions.region == 'us-standard') {
+            elbDeleteOptions.region = 'us-east-1';
         }
-        AWS.config.update(_.pick(eblDeleteOptions, 'accessKeyId', 'secretAccessKey', 'region'));
-        var elb = new AWS.ELB(_.pick(eblDeleteOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        AWS.config.update(_.pick(elbDeleteOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        var elb = new AWS.ELB(_.pick(elbDeleteOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
         task.delete.forEach(function (loadBalancer) {
             elb.deleteLoadBalancer({"LoadBalancerName": loadBalancer},
@@ -61,12 +61,12 @@ exports.run = function (grunt, taskData) {
     }
 
     if (task.addInstances) {
-        var eblAddInstancesOptions = _(_.clone(options)).extend(task.addInstances.options || {});
-        if (eblAddInstancesOptions.region == 'us-standard') {
-            eblAddInstancesOptions.region = 'us-east-1';
+        var elbAddInstancesOptions = _(_.clone(options)).extend(task.addInstances.options || {});
+        if (elbAddInstancesOptions.region == 'us-standard') {
+            elbAddInstancesOptions.region = 'us-east-1';
         }
-        AWS.config.update(_.pick(eblAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
-        var elb = new AWS.ELB(_.pick(eblAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        AWS.config.update(_.pick(elbAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
+        var elb = new AWS.ELB(_.pick(elbAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
         elb.registerInstancesWithLoadBalancer(loadBalancer,
         function (err, data) {
