@@ -36,7 +36,7 @@ exports.run = function (grunt, taskData) {
             ec2.describeImages(_.pick(task.findAMI, "Owners","ExecutableUsers","Filters"),
                 function (err, data) {
                     if (err) {
-                        grunt.fail.warn("Fetching AMI info failed. AWS response: "+ JSON.stringify(err));
+                        grunt.fail.warn("Fetching AMI info failed. AWS response: " + JSON.stringify(err));
                     }
                     else {
                         grunt.log.writeln("Fetching AMI info succeded");
@@ -50,7 +50,7 @@ exports.run = function (grunt, taskData) {
                         });
                         ami = data.Images[0].ImageId;
 
-                        grunt.log.writeln("Found latest matching AMI: " + ami + " - \"" +data.Images[0].Name +"\"" );
+                        grunt.log.writeln("Found latest matching AMI: " + ami + ' - "' + data.Images[0].Name + '"');
                         startEC2(options, task);
                     }
             });
@@ -135,7 +135,7 @@ exports.run = function (grunt, taskData) {
             ec2.terminateInstances(_.pick(task.terminateEC2, "InstanceIds"),
                 function (err, data) {
                     if (err) {
-                        grunt.fail.warn("Terminating EC2 intances failed. AWS response: \n"+ JSON.stringify(err));
+                        grunt.fail.warn("Terminating EC2 intances failed. AWS response: \n" + JSON.stringify(err));
                     }
                     else {
                         grunt.log.writeln(JSON.stringify(data));
