@@ -1,6 +1,6 @@
 'use strict';
 
-exports.run = function(grunt, taskData) {
+exports.run = function (grunt, taskData) {
     var ELB_INSTANCE_ADD_TO_ELB_SUCCESS = '↗'.yellow + ' Instance(s) added to ELB';
     var ELB_INSTANCE_ADD_TO_ELB_FAIL = '✗'.red + ' Adding instance(s) to ELB failed with %s';
     var ELB_INSTANCE_REMOVE_FROM_ELB_SUCCESS = '↙'.blue + ' Instance(s) removed from ELB';
@@ -16,8 +16,7 @@ exports.run = function(grunt, taskData) {
                 .extend(taskData.data.options || {})
                 .extend(taskData.data.elb.options || {})
                 .value();
-    }
-    else {
+    } else {
         var task = taskData;
     }
 
@@ -29,13 +28,12 @@ exports.run = function(grunt, taskData) {
         AWS.config.update(_.pick(eblCreateOptions, 'accessKeyId', 'secretAccessKey', 'region'));
         var elb = new AWS.ELB(_.pick(eblCreateOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
-        task.create.forEach(function(loadBalancer){
+        task.create.forEach(function (loadBalancer) {
             elb.createLoadBalancer(loadBalancer,
-            function(err, data) {
+            function (err, data) {
                 if (err) {
                     grunt.log.writeln(JSON.stringify(err));
-                }
-                else {
+                } else {
                     grunt.log.writeln("ELB " + data.DNSName + " created");
                 }
             });
@@ -50,13 +48,12 @@ exports.run = function(grunt, taskData) {
         AWS.config.update(_.pick(eblDeleteOptions, 'accessKeyId', 'secretAccessKey', 'region'));
         var elb = new AWS.ELB(_.pick(eblDeleteOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
-        task.delete.forEach(function(loadBalancer){
+        task.delete.forEach(function (loadBalancer) {
             elb.deleteLoadBalancer({"LoadBalancerName": loadBalancer},
-            function(err, data) {
+            function (err, data) {
                 if (err) {
                     grunt.log.writeln(JSON.stringify(err));                    
-                }
-                else {
+                } else {
                     grunt.log.writeln("ELB " + loadBalancer + " deleted");                    
                 }
             });
@@ -72,11 +69,10 @@ exports.run = function(grunt, taskData) {
         var elb = new AWS.ELB(_.pick(eblAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
         elb.registerInstancesWithLoadBalancer(loadBalancer,
-        function(err, data) {
+        function (err, data) {
             if (err) {
                 grunt.log.writeln(JSON.stringify(err));                    
-            }
-            else {
+            } else {
                 grunt.log.writeln(JSON.stringify(data.instances) + " instances added to " + loadBalancer.LoadBalancerName);
             }
         });
