@@ -99,8 +99,10 @@ exports.run = function (grunt, taskData) {
     }
 
     var tagInstances = function (instances, options, tags, max_retries) {
+        var retry_interval_s = 3;
+
         if (max_retries === undefined) {
-            max_retries = 5;
+            max_retries = 20;
         }
 
         if (tags) {
@@ -109,7 +111,10 @@ exports.run = function (grunt, taskData) {
                 function (err, data) {
                     if (err) {
                         if (max_retries > 0) {
-                            tagInstances(instances, options, tags, max_retries - 1);
+                            grunt.log.writeln("Failed to tag instance, retrying in " + retry_interval_s + " seconds...");
+                            setTimeout(function () {
+                                tagInstances(instances, options, tags, max_retries - 1);
+                            }, retry_interval_s * 1000);
                         } else {
                             grunt.fail.warn(util.format(EC2_INSTANCE_TAG_FAIL, JSON.stringify(err)));
                         }
