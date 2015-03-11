@@ -37,14 +37,12 @@ exports.run = function (grunt, taskData) {
                 function (err, data) {
                     if (err) {
                         grunt.fail.warn("Fetching AMI info failed. AWS response: " + JSON.stringify(err));
-                    }
-                    else {
+                    } else {
                         grunt.log.writeln("Fetching AMI info succeded");
                         data.Images.sort(function (a, b) {
                             if (a.Name > b.Name) {
                                 return -1;
-                            }
-                            else {
+                            } else {
                                 return 1;
                             }
                         });
