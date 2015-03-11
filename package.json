@@ -1,11 +1,11 @@
 {
   "name": "grunt-aws",
   "description": "AWS Grunt plugin",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "homepage": "https://github.com/tophatmonocle/grunt-aws",
   "author": {
     "name": "Maciej Lisiewski",
-    "email": "maciej@tophat.com"
+    "email": "devops@tophat.com"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "grunt": "~0.4.1"
   },
   "dependencies": {
-    "aws-sdk": "~2.0.0",
+    "aws-sdk": "2.1.16",
     "underscore": ">=1.5.1",
     "require-dir": ">=0.1",
     "util": ">=0.4.9"
