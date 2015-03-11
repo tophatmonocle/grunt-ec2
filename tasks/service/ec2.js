@@ -72,7 +72,7 @@ exports.run = function (grunt, taskData) {
                                                    "KeyName", "InstanceType", "UserData",
                                                    "Placement", "SecurityGroups"), function (err, data) {
                 if (err) {
-                    grunt.fail.warn(util.format(EC2_INSTANCE_LAUNCH_FAIL, JSON.stringify(err))); 
+                    grunt.fail.warn("Failed to launch instance! " + util.format(EC2_INSTANCE_LAUNCH_FAIL, JSON.stringify(err))); 
                     done();
                 } else {
                     var instances = new Array();
