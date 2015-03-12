@@ -52,9 +52,9 @@ exports.run = function (grunt, taskData) {
             elb.deleteLoadBalancer({"LoadBalancerName": loadBalancer},
             function (err, data) {
                 if (err) {
-                    grunt.log.writeln(JSON.stringify(err));                    
+                    grunt.log.writeln(JSON.stringify(err));
                 } else {
-                    grunt.log.writeln("ELB " + loadBalancer + " deleted");                    
+                    grunt.log.writeln("ELB " + loadBalancer + " deleted");
                 }
             });
         });
