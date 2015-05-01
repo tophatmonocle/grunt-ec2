@@ -104,7 +104,8 @@ exports.run = function (grunt, taskData) {
     }
 
     var tagInstances = function (instances, options, tags, max_retries) {
-        grunt.log.writeln("DEBUG: tagInstances called with tags " + tags);
+        grunt.log.writeln("DEBUG: tagInstances called with name " + grunt.config('ec2_name') " and webserver " + grunt.config('run_webserver') + " and celery " + grunt.config('run_celery'));
+
         var retry_interval_s = 3;
 
         if (max_retries === undefined) {
