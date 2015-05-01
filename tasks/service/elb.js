@@ -8,7 +8,7 @@ exports.run = function (grunt, taskData) {
     
     var AWS = taskData.AWS;
 
-    var _ = require("underscore");
+    var _ = require('underscore');
 
     if (taskData.data.elb !== undefined) {
         var task = taskData.data.elb;
@@ -61,20 +61,23 @@ exports.run = function (grunt, taskData) {
     }
 
     if (task.addInstances) {
+        var done = taskData.async();
+
         var elbAddInstancesOptions = _(_.clone(options)).extend(task.addInstances.options || {});
         if (elbAddInstancesOptions.region == 'us-standard') {
             elbAddInstancesOptions.region = 'us-east-1';
         }
+
         AWS.config.update(_.pick(elbAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
         var elb = new AWS.ELB(_.pick(elbAddInstancesOptions, 'accessKeyId', 'secretAccessKey', 'region'));
 
-        elb.registerInstancesWithLoadBalancer(loadBalancer,
-        function (err, data) {
+        elb.registerInstancesWithLoadBalancer(loadBalancer, function (err, data) {
             if (err) {
                 grunt.log.writeln(JSON.stringify(err));                    
             } else {
                 grunt.log.writeln(JSON.stringify(data.instances) + " instances added to " + loadBalancer.LoadBalancerName);
             }
+            done();
         });
     }
 };

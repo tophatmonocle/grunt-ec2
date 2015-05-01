@@ -8,7 +8,7 @@ exports.run = function (grunt, taskData) {
     var EC2_INSTANCE_LAUNCHED_TO_DATE = '↗'.yellow + ' EC2 instance(s) launched so far during entire session, instance ids:: %s';
 
     var AWS = taskData.AWS;
-    var _ = require("underscore");
+    var _ = require('underscore');
     var util = require('util');
     var done = taskData.async();
 
@@ -87,12 +87,17 @@ exports.run = function (grunt, taskData) {
                     grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCH_SUCCESS, instances.join(', ')));
                     grunt.log.writeln(util.format(EC2_INSTANCE_LAUNCHED_TO_DATE, grunt.config('launched_ec2_instance_ids').join(', ')));
 
-                    if (task.startEC2.Tags !== undefined) {
-                        tagInstances(instances, startEC2Options, task.startEC2.Tags);
-                    } else {
-                        grunt.config.writeln("No tags defined to add to instances.");
-                        done();
-                    }
+                    // Hack to avoid a race condition on AWS's end,
+                    // where new instances can't be immediately placed into an ELB
+                    // or tagged, some of the time.
+                    setTimeout(function () {
+                        if (task.startEC2.Tags !== undefined) {
+                            tagInstances(instances, startEC2Options, task.startEC2.Tags);
+                        } else {
+                            grunt.config.writeln("No tags defined to add to instances.");
+                            done();
+                        }
+                    }, 10000);
                 }
             });
         }
@@ -117,11 +122,12 @@ exports.run = function (grunt, taskData) {
                             }, retry_interval_s * 1000);
                         } else {
                             grunt.fail.warn(util.format(EC2_INSTANCE_TAG_FAIL, JSON.stringify(err)));
+                            done();
                         }
                     } else {
                         grunt.log.writeln(EC2_INSTANCE_TAG_SUCCESS);
+                        done();
                     }
-                    done();
             });
         }
     }
